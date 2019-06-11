@@ -4,8 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.widget.ImageView;
+
+import com.xpf.android.imageloader.cache.ImageCache;
+import com.xpf.android.imageloader.cache.MemoryCache;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -38,7 +40,7 @@ public class ImageLoader {
         this.mImageCache = mImageCache;
     }
 
-    private void updateImgaeView(final ImageView imageView, final Bitmap bitmap) {
+    private void updateImageView(final ImageView imageView, final Bitmap bitmap) {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -74,7 +76,7 @@ public class ImageLoader {
                     return;
                 }
                 if (imageView.getTag().equals(url)) {
-                    updateImgaeView(imageView, bitmap);
+                    updateImageView(imageView, bitmap);
                 }
                 mImageCache.put(url, bitmap);
             }
@@ -96,7 +98,6 @@ public class ImageLoader {
             conn.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e(TAG, "Exception:" + e.getMessage());
         }
 
         return bitmap;

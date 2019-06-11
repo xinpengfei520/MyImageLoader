@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xpf.android.imageloader.ImageLoader;
-import com.xpf.android.imageloader.MemoryCache;
+import com.xpf.android.imageloader.cache.MemoryCache;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;

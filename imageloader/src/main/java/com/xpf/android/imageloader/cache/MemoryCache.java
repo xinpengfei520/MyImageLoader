@@ -1,4 +1,4 @@
-package com.xpf.android.imageloader;
+package com.xpf.android.imageloader.cache;
 
 import android.graphics.Bitmap;
 import android.util.LruCache;
