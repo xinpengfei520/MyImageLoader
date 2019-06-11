@@ -1,16 +1,21 @@
-package com.anloq.sdk.imageloader;
+package com.xpf.android.imageloader;
 
 import android.graphics.Bitmap;
 
 /**
  * Created by xpf on 2017/10/22 :)
- * Function:
+ * Function:双缓存类
  */
-
 public class DoubleCache implements ImageCache {
 
-    ImageCache mMemoryCache = new MemoryCache();
-    ImageCache mDiskCache = new DiskCache();
+    /**
+     * 内存缓存
+     */
+    private ImageCache mMemoryCache = new MemoryCache();
+    /**
+     * 磁盘缓存
+     */
+    private ImageCache mDiskCache = new DiskCache();
 
     /**
      * 优先使用内存加载，如果无再使用SD卡缓存
@@ -24,6 +29,7 @@ public class DoubleCache implements ImageCache {
         if (bitmap == null) {
             bitmap = mDiskCache.get(url);
         }
+
         return bitmap;
     }
 

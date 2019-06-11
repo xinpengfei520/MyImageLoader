@@ -1,4 +1,4 @@
-package com.anloq.sdk.imageloader;
+package com.xpf.android.imageloader;
 
 import android.graphics.Bitmap;
 import android.util.LruCache;
@@ -9,8 +9,11 @@ import android.util.LruCache;
  */
 
 public class MemoryCache implements ImageCache {
-    // 图片LRU缓存
-    LruCache<String, Bitmap> mImageCache;
+
+    /**
+     * 图片LRU缓存
+     */
+    private LruCache<String, Bitmap> mImageCache;
 
     public MemoryCache() {
         initImageCache();
@@ -22,7 +25,7 @@ public class MemoryCache implements ImageCache {
     private void initImageCache() {
         // 计算可使用的最大内存
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-        // 取1/4的可用内存作为缓存
+        // 取 1/4 的可用内存作为缓存
         final int cacheSize = maxMemory / 4;
         mImageCache = new LruCache<String, Bitmap>(cacheSize) {
             @Override

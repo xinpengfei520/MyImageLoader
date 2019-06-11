@@ -1,4 +1,4 @@
-package com.anloq.sdk.imageloader;
+package com.xpf.android.imageloader;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

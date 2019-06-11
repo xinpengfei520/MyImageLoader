@@ -1,7 +1,10 @@
-package com.anloq.sdk.imageloader;
+package com.xpf.android.imageloader;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.net.HttpURLConnection;
@@ -16,19 +19,32 @@ import java.util.concurrent.Executors;
 
 public class ImageLoader {
 
-    ImageCache mImageCache = new MemoryCache();
+    private static final String TAG = "ImageLoader";
+    private ImageCache mImageCache = new MemoryCache();
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
-    // 线程池，线程池数量为CPU的数量
-    ExecutorService mExecutorService = Executors.newFixedThreadPool(
-            Runtime.getRuntime().availableProcessors());
+    /**
+     * 线程池，线程池数量为 CPU 的数量 + 1
+     */
+    private ExecutorService mExecutorService = Executors.newFixedThreadPool(
+            Runtime.getRuntime().availableProcessors() + 1);
 
     /**
      * 注入缓存实现
      *
      * @param mImageCache
      */
-    public void setmImageCache(ImageCache mImageCache) {
+    public void setImageCache(ImageCache mImageCache) {
         this.mImageCache = mImageCache;
+    }
+
+    private void updateImgaeView(final ImageView imageView, final Bitmap bitmap) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                imageView.setImageBitmap(bitmap);
+            }
+        });
     }
 
     /**
@@ -43,6 +59,7 @@ public class ImageLoader {
             imageView.setImageBitmap(bitmap);
             return;
         }
+
         // 图片没有缓存提交到线程池中下载
         submitLoadRequest(url, imageView);
     }
@@ -53,9 +70,11 @@ public class ImageLoader {
             @Override
             public void run() {
                 Bitmap bitmap = downloadImage(url);
-                if (bitmap == null) return;
+                if (bitmap == null) {
+                    return;
+                }
                 if (imageView.getTag().equals(url)) {
-                    imageView.setImageBitmap(bitmap);
+                    updateImgaeView(imageView, bitmap);
                 }
                 mImageCache.put(url, bitmap);
             }
@@ -77,7 +96,9 @@ public class ImageLoader {
             conn.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e(TAG, "Exception:" + e.getMessage());
         }
+
         return bitmap;
     }
 

@@ -1,4 +1,4 @@
-package com.anloq.sdk.imageloader;
+package com.xpf.android.imageloader;
 
 import org.junit.Test;
 
