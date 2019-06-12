@@ -7,8 +7,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.xpf.android.imageloader.ImageLoader;
-import com.xpf.android.imageloader.cache.MemoryCache;
+import com.xpf.android.imageloader.core.EasyImageLoader;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -48,34 +47,19 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable.add(disposable);
     }
 
+    /**
+     * 加载图片
+     */
     private void loadImage() {
-        ImageLoader imageLoader = new ImageLoader();
-        // 使用内存缓存
-        imageLoader.setImageCache(new MemoryCache());
-//        // 使用SD卡缓存
-//        imageLoader.setImageCache(new DiskCache());
-        // 使用双缓存
-//        imageLoader.setImageCache(new DoubleCache());
-        // 使用自定义的图片缓存
-//        imageLoader.setImageCache(new ImageCache() {
-//            @Override
-//            public Bitmap get(String url) {
-//                return null;
-//            }
-//
-//            @Override
-//            public void put(String url, Bitmap bitmap) {
-//
-//            }
-//        });
-
-        imageLoader.displayImage(IMAGE_URL, imageView);
+        EasyImageLoader.getInstance().displayImage(imageView, IMAGE_URL);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         compositeDisposable.clear();
+        // 退出时关闭
+        EasyImageLoader.getInstance().stop();
     }
 
 }

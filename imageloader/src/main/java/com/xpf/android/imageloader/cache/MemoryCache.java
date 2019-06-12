@@ -3,11 +3,12 @@ package com.xpf.android.imageloader.cache;
 import android.graphics.Bitmap;
 import android.util.LruCache;
 
+import com.xpf.android.imageloader.request.BitmapRequest;
+
 /**
  * Created by xpf on 2017/10/22 :)
  * Function:图片缓存类
  */
-
 public class MemoryCache implements ImageCache {
 
     /**
@@ -36,12 +37,18 @@ public class MemoryCache implements ImageCache {
     }
 
     @Override
-    public void put(String url, Bitmap bitmap) {
-        mImageCache.put(url, bitmap);
+    public Bitmap get(BitmapRequest request) {
+        return mImageCache.get(request.imageUri);
     }
 
     @Override
-    public Bitmap get(String url) {
-        return mImageCache.get(url);
+    public void put(BitmapRequest request, Bitmap bitmap) {
+        mImageCache.put(request.imageUri, bitmap);
     }
+
+    @Override
+    public void remove(BitmapRequest request) {
+        mImageCache.remove(request.imageUri);
+    }
+
 }
